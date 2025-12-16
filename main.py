@@ -1,10 +1,14 @@
-file_path = "passwords.txt"
+from cryptography.fernet import Fernet
+import os
+
+key = Fernet.generate_key()
+k = Fernet(key)
+file_path = "data/passwords.txt"
 
 print("1 - Voir mes mots de passes \n" \
 "2 - Crée un mot de passe \n" \
 "3 - Modifier un mot de passe \n" \
 "4 - Supprimer un mot de passe ")
-
 
 
 def choice_usr():
@@ -21,8 +25,12 @@ def choice_usr():
             delete_password(file_path)
 
 def write_password(file_path):
+    id = input("Veuillez saisir votre nom d'utilisateur : ")
     password = input("Veuillez entrer votre mot de passe : ")
     fichier = open(file_path, "a")
+    fichier.write(id)
+    fichier.write(" : ")
+    k.encrypt(password.encode())
     fichier.write(password)
     fichier.write("\n")
     fichier.close()
